@@ -7,6 +7,15 @@ import java.util.Arrays;
 public class Array_List<T> {
 	// Data fields
 	protected Object[] data; // Using a regular array to store the elements or inputs
+	protected Date[] releaseDate;
+	protected String[] name;
+	protected String[] description;
+	protected Date[] receiveDate;
+	protected enum[] status{
+		released, received
+		}
+	protected int totalShowing;
+	protected int totalComing;
 	protected int capacity; // Maximum size of the regular array
 	protected int numOfItems; // Number of elements stored in the array list
 	private static final int DEFAULT_CAPACITY = 10;
@@ -16,6 +25,11 @@ public class Array_List<T> {
 	public Array_List() { // Default constructor
 		capacity = DEFAULT_CAPACITY;
 		data = new Object[capacity];
+		releaseDate = new Date[capacity];
+		name = new String[capacity];
+		description = new String[capacity];
+		receiveDate = new Date[capacity];
+		status = new Enum[capacity];
 	}
 	
 	public Array_List(int initialCapacity) { //Constructor with user-specified capacity
