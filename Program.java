@@ -1,8 +1,14 @@
 package project_1a;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Program {
+	
+	static Ordered_Array_List<String> showing = new Ordered_Array_List<String>();
+	static Ordered_Array_List<String> coming = new Ordered_Array_List<String>();
+	
 	public static void menu() {
 		System.out.println("1. Display movies");
 		System.out.println("2. Add movies");
@@ -35,6 +41,8 @@ public class Program {
 			switch(option = scanner.nextInt()){
 			case 1:
 				System.out.println("\nPICKED: 1\n");
+				System.out.println(showing);
+				System.out.println(coming);
 				option = backToMenu(scanner, option);
 				break;
 			case 2:
@@ -67,43 +75,29 @@ public class Program {
 			}
 		}
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
 		int option = 0;
-		display();
 		
 		//File Input
 		FileInputStream inputFile = new FileInputStream("input.txt");
 		Scanner scanner = new Scanner(inputFile);
 		
-		//Lists containing movies
-		Ordered_Array_List<String> showing = new Ordered_Array_List<String>();
-		Ordered_Array_List<String> coming = new Ordered_Array_List<String>();
-		
 		while(scanner.hasNext()) {//Read all data in file
-			String name = scanner.next();
-			String releaseDate = scanner.next();
-			String description = scanner.next();
-			String receiveDate = scanner.next();
 			String status = scanner.next();
 			
 			if(status.equals("released")) {
-				showing.add(name);
-				showing.add(releaseDate);
-				showing.add(description);
-				showing.add(receiveDate);
+				showing.add(scanner.nextLine());
 				showing.add(status);
 			}
 			
-			if(status.equals("recieved")) {
-				coming.add(name);
-				coming.add(releaseDate);
-				coming.add(description);
-				coming.add(receiveDate);
+			if(status.equals("received")) {
+				coming.add(scanner.nextLine());
 				coming.add(status);
 			}
 		}
 		
 		scanner.close();
 		inputFile.close();
+		display();
 	} 
 }
