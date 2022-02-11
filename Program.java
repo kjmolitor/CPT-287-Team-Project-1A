@@ -71,6 +71,39 @@ public class Program {
 		int option = 0;
 		display();
 		
+		//File Input
+		FileInputStream inputFile = new FileInputStream("input.txt");
+		Scanner scanner = new Scanner(inputFile);
 		
+		//Lists containing movies
+		Ordered_Array_List<String> showing = new Ordered_Array_List<String>();
+		Ordered_Array_List<String> coming = new Ordered_Array_List<String>();
+		
+		while(scanner.hasNext()) {//Read all data in file
+			String name = scanner.next();
+			String releaseDate = scanner.next();
+			String description = scanner.next();
+			String receiveDate = scanner.next();
+			String status = scanner.next();
+			
+			if(status.equals("released")) {
+				showing.add(name);
+				showing.add(releaseDate);
+				showing.add(description);
+				showing.add(receiveDate);
+				showing.add(status);
+			}
+			
+			if(status.equals("recieved")) {
+				coming.add(name);
+				coming.add(releaseDate);
+				coming.add(description);
+				coming.add(receiveDate);
+				coming.add(status);
+			}
+		}
+		
+		scanner.close();
+		inputFile.close();
 	} 
 }
