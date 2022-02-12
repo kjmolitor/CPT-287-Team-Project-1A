@@ -1,0 +1,12 @@
+released, Glass, (ReleaseDate)01/18/2019, Drama/Fantasy, (ReceiveDate)01/12/2019
+received, Miss Bala, (ReleaseDate)02/01/2019, Mystery/Thriller, (ReceiveDate)01/17/2019
+released, Interstellar, (ReleaseDate)10/26/2014, Sci-fi/Adventure, (ReceiveDate)09/17/2014
+released, Interstellar, (ReleaseDate)10/26/2014, Sci-fi/Adventure, (ReceiveDate)09/17/2014
+received, The Martian, (ReleaseDate)10/02/2015, Sci-fi/Drama, (ReceiveDate)09/10/2015
+received, The Martian, (ReleaseDate)10/02/2015, Sci-fi/Drama, (ReceiveDate)09/10/2015
+released, Dune, (ReleaseDate)10/22/2021, Sci-fi/Adventure, (ReceiveDate)09/10/2021
+released, Dune, (ReleaseDate)10/22/2021, Sci-fi/Adventure, (ReceiveDate)09/10/2021
+received, Scream, (ReleaseDate)01/14/2022, Horror/Thriller, (ReceiveDate)12/20/2021
+released, The Godfather, (ReleaseDate)12/20/1974, Sci-fi/Adventure, (ReceiveDate)11/15/1974
+released, Taxi Driver, (ReleaseDate)02/08/1976, Drama/Drama, (ReceiveDate)01/10/1976
+received, Inception, (ReleaseDate)07/13/2010, Action/Sci-fi, (ReceiveDate)06/10/2010
