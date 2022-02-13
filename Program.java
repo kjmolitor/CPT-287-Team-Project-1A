@@ -106,7 +106,7 @@ public class Program {
 			String description = input[2];
 			String status = input[4];
 			
-			Movie movie = new Movie(releaseDate, name, description,receiveDate,status );
+			Movie movie = new Movie(name, releaseDate, description, receiveDate,status );
 			if(input[4].equals("released")) {
 				showing.add(movie);
 			}
