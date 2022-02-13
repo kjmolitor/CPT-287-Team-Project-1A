@@ -1,5 +1,5 @@
 Glass, (ReleaseDate)01/18/2019, Drama/Fantasy, (ReceiveDate)01/12/2019, released
-received, Miss Bala, (ReleaseDate)02/01/2019, Mystery/Thriller, (ReceiveDate)01/17/2019, received
+Miss Bala, (ReleaseDate)02/01/2019, Mystery/Thriller, (ReceiveDate)01/17/2019, received
 Interstellar, (ReleaseDate)10/26/2014, Sci-fi/Adventure, (ReceiveDate)09/17/2014, released 
 Interstellar, (ReleaseDate)10/26/2014, Sci-fi/Adventure, (ReceiveDate)09/17/2014, released
 The Martian, (ReleaseDate)10/02/2015, Sci-fi/Drama, (ReceiveDate)09/10/2015, received
