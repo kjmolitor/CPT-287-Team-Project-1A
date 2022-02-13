@@ -12,7 +12,7 @@ public class Movie {
 	
 	public Movie() {}
 	
-	public Movie(Date releaseDate, String name, String description, Date receiveDate, String status) {
+	public Movie(String name, Date releaseDate, String description, Date receiveDate, String status) {
 		this.releaseDate = releaseDate;
 		this.name = name;
 		this.description = description;
