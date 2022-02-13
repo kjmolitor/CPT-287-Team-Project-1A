@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class Program {
 	
-	static Ordered_Array_List<String> showing = new Ordered_Array_List<String>();
-	static Ordered_Array_List<String> coming = new Ordered_Array_List<String>();
+	static Movie_List showing = new Movie_List();
+	static Movie_List coming = new Movie_List();
 	
 	public static void menu() {
 		System.out.println("1. Display movies");
@@ -75,29 +75,50 @@ public class Program {
 			}
 		}
 	}
+	
+	//this function will convert the string to date variable. from stackoverflow
+	public static Date stringToDate(String s,SimpleDateFormat dateFormat ){
+
+	    Date result = null;
+	    try{
+	        result  = dateFormat.parse(s);
+	    }
+
+	    catch(ParseException e){
+	        e.printStackTrace();
+	    }
+	    return result ;
+	}
+	
 	public static void main(String[] args) throws IOException{
-		int option = 0;
+		//display();
 		
-		//File Input
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // this will get the input in dd/MM/yyyy form
 		FileInputStream inputFile = new FileInputStream("input.txt");
 		Scanner scanner = new Scanner(inputFile);
 		
+		
 		while(scanner.hasNext()) {//Read all data in file
-			String status = scanner.next();
+			String[] input = scanner.nextLine().split(", ");
+			Date releaseDate = stringToDate(input[2].replace("(ReleaseDate)", ""), dateFormat);
+			Date receiveDate = stringToDate(input[4].replace("(ReceiveDate)", ""), dateFormat);
+			String name = input[1];
+			String description = input[3];
+			String status = input[0];
 			
-			if(status.equals("released")) {
-				showing.add(scanner.nextLine());
-				showing.add(status);
+			Movie movie = new Movie(releaseDate, name, description,receiveDate,status );
+			if(input[0].equals("released")) {
+				showing.add(movie);
 			}
-			
-			if(status.equals("received")) {
-				coming.add(scanner.nextLine());
-				coming.add(status);
+			if(input[0].equals("received")) {
+				coming.add(movie);
 			}
 		}
-		
+
+
+		System.out.println(showing.toString());
+		System.out.println(coming.toString());
 		scanner.close();
 		inputFile.close();
-		display();
 	} 
 }
