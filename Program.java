@@ -41,8 +41,10 @@ public class Program {
 			switch(option = scanner.nextInt()){
 			case 1:
 				System.out.println("\nPICKED: 1\n");
-				System.out.println(showing);
-				System.out.println(coming);
+				System.out.println("--------Showing--------");
+				System.out.println(showing.toString());
+				System.out.println("--------Coming--------");
+				System.out.println(coming.toString());
 				option = backToMenu(scanner, option);
 				break;
 			case 2:
@@ -114,10 +116,6 @@ public class Program {
 				coming.add(movie);
 			}
 		}
-
-
-		System.out.println(showing.toString());
-		System.out.println(coming.toString());
 		scanner.close();
 		inputFile.close();
 	} 
