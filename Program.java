@@ -100,17 +100,17 @@ public class Program {
 		
 		while(scanner.hasNext()) {//Read all data in file
 			String[] input = scanner.nextLine().split(", ");
-			Date releaseDate = stringToDate(input[2].replace("(ReleaseDate)", ""), dateFormat);
-			Date receiveDate = stringToDate(input[4].replace("(ReceiveDate)", ""), dateFormat);
-			String name = input[1];
-			String description = input[3];
-			String status = input[0];
+			Date releaseDate = stringToDate(input[1].replace("(ReleaseDate)", ""), dateFormat);
+			Date receiveDate = stringToDate(input[3].replace("(ReceiveDate)", ""), dateFormat);
+			String name = input[0];
+			String description = input[2];
+			String status = input[4];
 			
 			Movie movie = new Movie(releaseDate, name, description,receiveDate,status );
-			if(input[0].equals("released")) {
+			if(input[4].equals("released")) {
 				showing.add(movie);
 			}
-			if(input[0].equals("received")) {
+			if(input[4].equals("received")) {
 				coming.add(movie);
 			}
 		}
