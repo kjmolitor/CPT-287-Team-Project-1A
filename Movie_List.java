@@ -128,14 +128,15 @@ public class Movie_List {
 		
 		@Override
 		public final String toString() {
-			String output = "[";
+			String output = "";
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			for(int i = 0; i < numOfItems; i++) {
-				output += data[i].toString();
+				output += String.format(data[i].getStatus() +", "+ data[i].getName() +", "+ dateFormat.format(data[i].getReleaseDate())
+						+", "+ data[i].getDescription()+", "+ dateFormat.format(data[i].getReceiveDate()) +"\n");
 				if (i != numOfItems - 1) {
-					output += ", ";
+					output += "\n";
 				}
 			}
-			output += "]";
 			return output;
 		}
 }
