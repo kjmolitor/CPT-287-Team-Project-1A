@@ -39,7 +39,7 @@ public class Program {
 		while(option != 8) {
 			menu();
 			switch(option = scanner.nextInt()){
-			case 1:
+			case 1://Display movies currently in list
 				System.out.println("\nPICKED: 1\n");
 				System.out.println("--------Showing--------");
 				System.out.println(showing.toString());
@@ -47,31 +47,31 @@ public class Program {
 				System.out.println(coming.toString());
 				option = backToMenu(scanner, option);
 				break;
-			case 2:
+			case 2://User add movies to list
 				System.out.println("\nPICKED: 2\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 3:
+			case 3://User edits movies release dates
 				System.out.println("\nPICKED: 3\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 4:
+			case 4://User edits movie description
 				System.out.println("\nPICKED: 4\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 5:
+			case 5://Start showing movies
 				System.out.println("\nPICKED: 5\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 6:
+			case 6://Show number of movies before a date
 				System.out.println("\nPICKED: 6\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 7:
+			case 7://Save changes
 				System.out.println("\nSaved!!\n");
 				option = backToMenu(scanner, option);
 				break;
-			case 8:
+			case 8://Exit
 				System.out.println("\nSelection: 8");
 				break;
 			}
