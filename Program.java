@@ -33,7 +33,7 @@ public class Program {
 		
 	}
 	
-	public static void display(){
+	public static void display() throws FileNotFoundException{
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);
 		while(option != 8) {
@@ -69,6 +69,11 @@ public class Program {
 				break;
 			case 7://Save changes
 				System.out.println("\nSaved!!\n");
+				FileOutputStream outputFile = new FileOutputStream("input.txt");
+				PrintWriter writer = new PrintWriter(outputFile);
+				writer.print(coming.toString());
+				writer.print(showing.toString());
+				writer.close();
 				option = backToMenu(scanner, option);
 				break;
 			case 8://Exit
