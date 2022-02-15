@@ -124,4 +124,114 @@ public class Program {
 		scanner.close();
 		inputFile.close();
 	} 
+	public static void addMovie() { 
+
+		//first we'll create a scanner
+		Scanner movieInput = new Scanner(System.in);
+		
+		//The user will be asked to set the name of the new movie
+		System.out.println("Please set name of Movie: ");
+		String movieName = movieInput.nextLine();
+		System.out.println();
+		
+		//the user will then be prompted to set the description
+		System.out.println("Please set description of movie: ");
+		String movieDesc = movieInput.nextLine();
+		System.out.println();
+		
+		//the user will then set the date
+		System.out.println("Please set release year: ");
+		int releaseYear = movieInput.nextInt();
+		System.out.println();
+		
+		//if the release year exceeds 9999 then the movie is invalid
+		if (releaseYear > 9999) {
+			
+			System.out.println("Year Invalid, please set valid year: ");
+			releaseYear = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		System.out.println("Please set release month: ");
+		int releaseMonth = movieInput.nextInt();
+		System.out.println();
+		
+		//if the release month exceeds 12 than it will be invalid
+		if (releaseMonth > 12) {
+			
+			System.out.println("Month Invalid, please set valid month: ");
+			releaseMonth = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		System.out.println("Please set release day: ");
+		int releaseDay = movieInput.nextInt();
+		System.out.println();
+		
+		//if the releaseDay exceeds 31 days the date will be invalid
+		if (releaseDay > 31) {
+			
+			System.out.println("Day Invalid, please set valid day: ");
+			releaseDay = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		//a new date is created with the user's inputs
+		Date movieRelease = new Date(releaseYear, releaseMonth, releaseDay);
+		
+		//we will repeat the steps to get the recieve year
+		System.out.println("Please set receive year: ");
+		int receiveYear = movieInput.nextInt();
+		System.out.println();
+		
+		if (receiveYear > 9999) {
+			
+			System.out.println("Year Invalid, please set valid year: ");
+			receiveYear = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		System.out.println("Please set receive month: ");
+		int receiveMonth = movieInput.nextInt();
+		System.out.println();
+		
+		if (receiveMonth > 12) {
+			
+			System.out.println("Month Invalid, please set valid month: ");
+			receiveMonth = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		System.out.println("Please set receive day: ");
+		int receiveDay = movieInput.nextInt();
+		System.out.println();
+		
+		if (receiveDay > 31) {
+			
+			System.out.println("Day Invalid, please set valid day: ");
+			receiveDay = movieInput.nextInt();
+			System.out.println();
+			
+		}//end if
+		
+		//a new date is created for the receive year
+		Date movieReceive = new Date(receiveYear, receiveMonth, receiveDay);
+		
+		//finally the user will be asked to set the status of the movie
+		System.out.println("Please set status of Movie: ");
+		String movieStatus = movieInput.nextLine();
+		System.out.println();//Note: for some reason the movie status lines seem to get skipped over
+		
+		//the movie class is created
+		Movie newMovie = new Movie(movieRelease, movieName, movieDesc, movieReceive, movieStatus);//NOTE: the formatting on the dates is incorrect
+
+		//moviesComing.add(newMovie); i'm not sure why this wasn't working
+		
+		
+	}//end addMovie
 }
