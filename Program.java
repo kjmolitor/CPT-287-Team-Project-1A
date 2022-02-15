@@ -94,6 +94,12 @@ public class Program {
 			return option;
 		}else {
 			System.out.println("Exiting...");
+			FileOutputStream outputFile = new FileOutputStream("input.txt");
+			PrintWriter writer = new PrintWriter(outputFile);
+			writer.print(coming.toFile());
+			writer.print(showing.toFile());
+			movieInput.close();
+			writer.close();
 			return 8;
 		}
 	}
