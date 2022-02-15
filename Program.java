@@ -1,11 +1,9 @@
 package project_1a;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,8 +47,6 @@ public class Program {
 				}
 			}
 		}
-		//System.out.println(coming.toFile());
-		
 		display();
 		movieInput.close();
 		scanner.close();
@@ -367,7 +363,5 @@ public class Program {
 		coming.add(newMovie);
 		
 	}//end addMovie
-	
-	
 
 }
