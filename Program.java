@@ -3,6 +3,7 @@ package project_1a;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -15,10 +16,10 @@ public class Program {
 	static Movie_List showing = new Movie_List();
 	static Movie_List coming = new Movie_List();
 	static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	static Scanner movieInput = new Scanner(System.in);;
+	static Scanner movieInput = new Scanner(System.in);
+	
 	
 	public static void main(String[] args) throws IOException {
-		//
 		
 		// this will get the input in dd/MM/yyyy form
 		FileInputStream inputFile = new FileInputStream("input.txt");
@@ -48,9 +49,9 @@ public class Program {
 				}
 			}
 		}
-		System.out.println(coming.toFile());
+		//System.out.println(coming.toFile());
 		
-		//display();
+		display();
 		movieInput.close();
 		scanner.close();
 		inputFile.close();
@@ -87,19 +88,23 @@ public class Program {
 	 * @param scanner
 	 * @param option
 	 * @return
+	 * @throws IOException 
 	 */
-	public static int backToMenu(Scanner scanner, int option) {
+	public static int backToMenu(Scanner scanner, int option) throws IOException {
+		printDash();
 		System.out.println("1. Continue\t2. Exit");
+		System.out.print("Select: ");
 		if(scanner.nextInt() == 1) {
 			return option;
 		}else {
 			System.out.println("Exiting...");
 			FileOutputStream outputFile = new FileOutputStream("input.txt");
-			PrintWriter writer = new PrintWriter(outputFile);
-			writer.print(coming.toFile());
-			writer.print(showing.toFile());
+			FileWriter writer = new FileWriter("input.txt",false);
+			writer.write(coming.toFile());
+			writer.write(showing.toFile());
 			movieInput.close();
 			writer.close();
+			outputFile.close();
 			return 8;
 		}
 	}
@@ -156,7 +161,7 @@ public class Program {
 		//The user will be asked to set the name of the movie
 		System.out.print("Please set the name of the movie that needs to change description: ");
 		String movieName = movieInput.nextLine();
-		System.out.print("Please set the name of the movie that needs to change description: ");
+		System.out.print("Please set the description of the movie that needs to change: ");
 		String movieDescription = movieInput.next();
 		
 		if(coming.updateDescription(movieName, capitalize(movieDescription))) {
@@ -248,18 +253,19 @@ public class Program {
 	
 	/**
 	 * The function will display the menu to the console and get user option until user chooses to exit the program
-	 * @throws FileNotFoundException: if the program can't get the input file or overwrite the input file
+	 * @throws IOException 
 	 */
-	public static void display() throws FileNotFoundException{
+	public static void display() throws IOException{
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);
 		while(option != 8) {
+			printDash();
 			menu();
 			switch(option = scanner.nextInt()){
 			case 1://Display movies currently in list
-				System.out.println("--------Showing--------");
+				System.out.println("--------Showing--------\n");
 				System.out.println(showing.toString());
-				System.out.println("--------Coming--------");
+				System.out.println("--------Coming--------\n");
 				System.out.println(coming.toString());
 				printDash();
 				option = backToMenu(scanner, option);
@@ -290,24 +296,25 @@ public class Program {
 				option = backToMenu(scanner, option);
 				break;
 			case 7:
-				System.out.println("\nSaved!!\n");
-				FileOutputStream outputFile = new FileOutputStream("input.txt");
-				PrintWriter writer = new PrintWriter(outputFile);
-				writer.print(coming.toFile());
-				writer.print(showing.toFile());
+				printDash();
+				System.out.println("\nSaved!!\n");				
+				FileWriter writer = new FileWriter("input.txt",false);
+				writer.write(coming.toFile());
+				writer.write(showing.toFile());
+				writer.close();
 				option = backToMenu(scanner, option);
 				break;
 			case 8:
-				outputFile = new FileOutputStream("input.txt");
-				writer = new PrintWriter(outputFile);
-				writer.print(coming.toFile());
-				writer.print(showing.toFile());
+				printDash();
+				System.out.println("Exiting...");
+				writer = new FileWriter("input.txt",false);
+				writer.write(coming.toFile());
+				writer.write(showing.toFile());
 				movieInput.close();
 				writer.close();
 				break;
 			}
 		}
-		
 	}
 
 	/**
@@ -351,6 +358,9 @@ public class Program {
 		//set status to received
 		String movieStatus = "received";
 		
+		while(movieRelease.before(movieReceive)) {
+			movieRelease = getDate("release date");
+		}
 		//the movie class is created
 		Movie newMovie = new Movie(movieName, movieRelease, capitalize(movieDesc), movieReceive, movieStatus);//NOTE: the formatting on the dates is incorrect
 		
