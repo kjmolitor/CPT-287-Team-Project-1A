@@ -183,10 +183,10 @@ public class Movie_List implements Iterable {
 		}
 		
 		/**
-		 * 
-		 * @param release
-		 * @param showing
-		 * @return
+		 * Add the movie with specified date from coming list to showing list
+		 * @param release: the specified release date
+		 * @param showing: showing list that need to add the movie with the specified date
+		 * @return: the new showing list that has the movie with the specified date
 		 */
 		public Movie_List displayReleaseDate(Date release, Movie_List showing) {
 			Movie_List result = new Movie_List(showing);
@@ -205,16 +205,15 @@ public class Movie_List implements Iterable {
 		
 		
 		/**
-		 * 
-		 * @param date
-		 * @return
+		 * search the index of the date in movie list that is after the specified date.
+		 * @param date: the specified date
+		 * @return: the index of the date that is after the specified date
 		 */
 		public int searchIndexBeforeDate(Date date) {
-
+			int i=1;
 			List_Iterator it = iterator();
 			while (it.hasNext()){
 				Movie current = it.next();
-				int i = 1;
 				if(date.before(current.getReleaseDate())) {
 					return i;
 				}
@@ -224,9 +223,9 @@ public class Movie_List implements Iterable {
 		}
 		
 		/**
-		 * 
-		 * @param date
-		 * @return
+		 * Return the movie list that has dates before the specified date
+		 * @param date: the specified date
+		 * @return: the movie list that has dates before the specified date
 		 */
 		public Movie_List displayBeforeDate(Date date) {
 			Movie_List result = new Movie_List();
@@ -241,17 +240,21 @@ public class Movie_List implements Iterable {
 			
 			List_Iterator it = iterator();
 			while (it.hasNext()){
+				if (index < 2) {
+					break;
+				}
 				Movie current = it.next();
 				result.add(current);
+				index--;
 			}
 			return result;
 		}
 		
 		/**
-		 *
-		 * @param name
-		 * @param description
-		 * @return
+		 * Update the description of the movie
+		 * @param name: the name of the movie that need to update description
+		 * @param description: the new description
+		 * @return: {true} if the description is updated; {false} otherwise
 		 */
 		public boolean updateDescription(String name, String description) {
 			
