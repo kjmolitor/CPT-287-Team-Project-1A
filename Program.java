@@ -1,14 +1,75 @@
 package project_1a;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
+
 public class Program {
-	
 	static Movie_List showing = new Movie_List();
 	static Movie_List coming = new Movie_List();
+	static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	static Scanner movieInput = new Scanner(System.in);;
 	
+	public static void main(String[] args) throws IOException {
+		//
+		
+		// this will get the input in dd/MM/yyyy form
+		FileInputStream inputFile = new FileInputStream("input.txt");
+		Scanner scanner = new Scanner(inputFile);
+		
+		 
+		while(scanner.hasNext()) {//Read all data in file
+			String[] input = scanner.nextLine().split(", ");
+			
+			String name = input[0].trim();
+			Date releaseDate = stringToDate(input[1].replace("(ReleaseDate)", ""));
+			String description = input[2].trim();
+			Date receiveDate = stringToDate(input[3].replace("(ReceiveDate)", ""));
+			String status = input[4].trim();
+			
+			
+			Movie movie = new Movie(name, releaseDate, description, receiveDate, status );
+			
+			if(status.equals("released")) {
+				if(!showing.containsName(name)) {
+					showing.add(movie);
+				}
+			}
+			else if(status.equals("received")) {
+				if(!coming.containsName(name)) {
+				coming.add(movie);
+				}
+			}
+		}
+		System.out.println(coming.toFile());
+		
+		//display();
+		movieInput.close();
+		scanner.close();
+		inputFile.close();
+		
+	} 
+
+	// Methods
+	
+	/**
+	 * separate the actions of options of the menu
+	 */
+	public static void printDash() {
+		System.out.println("-----------------------------------------------------------------");
+	}
+	
+	
+	/**
+	 * The menu of the program
+	 */
 	public static void menu() {
 		System.out.println("1. Display movies");
 		System.out.println("2. Add movies");
@@ -21,18 +82,168 @@ public class Program {
 		System.out.print("Selection: ");
 	}
 	
+	/**
+	 * This function will keep looping the menu until user choose to exit out
+	 * @param scanner
+	 * @param option
+	 * @return
+	 */
 	public static int backToMenu(Scanner scanner, int option) {
 		System.out.println("1. Continue\t2. Exit");
-		System.out.println("");
 		if(scanner.nextInt() == 1) {
 			return option;
 		}else {
-			System.out.println("Exited!!");
+			System.out.println("Exiting...");
 			return 8;
+		}
+	}
+	
+	
+	/**
+	 * Capitalize the string of description that has one or more than one movie description
+	 * @param str: the description of the movie
+	 * @return: the first-letter capitalized description of the movie
+	 */
+	public static String capitalize(String str) {
+		if (str == null || str.isEmpty()) {
+			return str;
+		}
+		String result = "";
+		String[] arr = str.split("/");
+		for(int i = 0; i < arr.length; i++) {
+			result += arr[i].substring(0,1).toUpperCase() + arr[i].substring(1);
+			if((i+1) < arr.length) {
+				result += "/";
 			}
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Update the release date of the movie in the coming list if user chooses option 3
+	 * Check if name is in the coming list
+	 * Check if date is valid
+	 */
+	public static void editRelease() {
+		
+		//The user will be asked to set the name of the new movie
+		System.out.print("Please tell the name of the movie that needs to change release day: ");
+		String movieName = movieInput.nextLine();
+		if( coming.containsName(movieName)) {
+			Date newDate = getDate("release date");
+			if(coming.updateRelease(movieName, newDate)) {
+				System.out.println("Update success");
+			}else {
+				System.out.println("Update fail, please check the date");
+			}
+		}else { System.out.println("The movie name is not in our movie list, please check the name again "+ movieName);}
+	}
+	
+	
+	/**
+	 * Update the description of the movie in the coming list if user chooses option 4
+	 * Check if the name is valid
+	 * Capitalize the first letter of the description 
+	 */
+	public static void editDescription() {
+		//The user will be asked to set the name of the movie
+		System.out.print("Please set the name of the movie that needs to change description: ");
+		String movieName = movieInput.nextLine();
+		System.out.print("Please set the name of the movie that needs to change description: ");
+		String movieDescription = movieInput.next();
+		
+		if(coming.updateDescription(movieName, capitalize(movieDescription))) {
+			System.out.println("Update success");
+		}else {
+			System.out.println("Update fail");
+		}
+	}
+	
+	/**
+	 * Show specified release date if it has in the coming list if user chooses option 5
+	 * Check if the release date is already in the showing list
+	 * Check if the release date does not exist in both lists
+	 */
+	public static void showRelease() {
+		Date displayDate = getDate("release date");
+		if(showing.hasReleaseDate(displayDate)) {
+			System.out.println("The release date is already in the showing list");
+		}else if(coming.hasReleaseDate(displayDate)) {
+			showing = new Movie_List(coming.displayReleaseDate(displayDate, showing));
+		}else {
+			System.out.println("The release date is not in the upcoming movie list and in theater movie list");
+		}
+	}
+
+	
+	/**
+	 * Display how many movies there are before the specified date, and display every movie before that date.
+	 */
+	public static void showBeforeDate() {
+		Date displayDate = getDate("date");
+		Movie_List movieBeforeDate = new Movie_List(coming.displayBeforeDate(displayDate));
+		System.out.println("There is/are "+ movieBeforeDate.size() + ": ");
+		System.out.print(movieBeforeDate.toString());
 		
 	}
 	
+	
+	/**
+	 * Check if the user date is valid. If it is not, it will keep looping until get the valid date
+	 * @param month: month from user menu
+	 * @param day: day from user menu
+	 * @param year: year from user menu
+	 * @return: the corrected date from user menu.
+	 */
+	public static Date checkDate(int day, int month, int year) {
+		if (month > 12) {
+			System.out.print("Month Invalid, please set valid month: ");
+			month = movieInput.nextInt();
+			System.out.println();
+			return checkDate(day,month,year);
+		}
+		if (day > 31 || (month == 2 && day > 28)) {
+				System.out.println("Day Invalid, please set valid day: ");
+				day = movieInput.nextInt();
+				System.out.println();
+				return checkDate(day,month,year);
+		}
+		if (year > 9999 || year < 1700) {
+			System.out.println("Year Invalid, please set valid year: ");
+			year = movieInput.nextInt();
+			System.out.println();
+			return checkDate(day,month,year);
+		}
+		return stringToDate( day + "/"+ month + "/" +year);
+	}
+	
+	
+	/**
+	 * Get the date of the movie from the user/menu 
+	 * @param type: the type of the date. It's either "release date" or "receive date", or it's just "date"
+	 * @return: the date from user menu
+	 */
+	public static Date getDate(String type) {
+		
+		int day,month,year;
+		System.out.printf("Please set the day of the %s: ",type);
+		day = movieInput.nextInt();
+		System.out.printf("Please set the month of the %s: ",type);
+		month = movieInput.nextInt();
+		System.out.printf("Please set the year of the %s: ",type);
+		year = movieInput.nextInt();
+
+		Date date= checkDate(day,month,year);;
+		
+		return date;
+	}
+	
+	
+	/**
+	 * The function will display the menu to the console and get user option until user chooses to exit the program
+	 * @throws FileNotFoundException: if the program can't get the input file or overwrite the input file
+	 */
 	public static void display() throws FileNotFoundException{
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);
@@ -40,198 +251,107 @@ public class Program {
 			menu();
 			switch(option = scanner.nextInt()){
 			case 1://Display movies currently in list
-				System.out.println("\nPICKED: 1\n");
 				System.out.println("--------Showing--------");
 				System.out.println(showing.toString());
 				System.out.println("--------Coming--------");
 				System.out.println(coming.toString());
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
 			case 2://User add movies to list
-				System.out.println("\nPICKED: 2\n");
+				addMovie();
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
 			case 3://User edits movies release dates
-				System.out.println("\nPICKED: 3\n");
+				editRelease();
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
 			case 4://User edits movie description
-				System.out.println("\nPICKED: 4\n");
+				editDescription();
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
-			case 5://Start showing movies
-				System.out.println("\nPICKED: 5\n");
+			case 5://Start showing movies with specified release date
+				showRelease();
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
 			case 6://Show number of movies before a date
-				System.out.println("\nPICKED: 6\n");
+				showBeforeDate();
+				printDash();
 				option = backToMenu(scanner, option);
 				break;
-			case 7://Save changes
+			case 7:
 				System.out.println("\nSaved!!\n");
 				FileOutputStream outputFile = new FileOutputStream("input.txt");
 				PrintWriter writer = new PrintWriter(outputFile);
-				writer.print(coming.toString());
-				writer.print(showing.toString());
-				writer.close();
+				writer.print(coming.toFile());
+				writer.print(showing.toFile());
 				option = backToMenu(scanner, option);
 				break;
-			case 8://Exit
-				System.out.println("\nSelection: 8");
+			case 8:
+				outputFile = new FileOutputStream("input.txt");
+				writer = new PrintWriter(outputFile);
+				writer.print(coming.toFile());
+				writer.print(showing.toFile());
+				movieInput.close();
+				writer.close();
 				break;
 			}
 		}
+		
 	}
-	
-	//this function will convert the string to date variable. from stackoverflow
-	public static Date stringToDate(String s,SimpleDateFormat dateFormat ){
+
+	/**
+	 * Convert user's string to a date value
+	 * @param s: user date's string
+	 * @return: the user date after converted 
+	 */
+	public static Date stringToDate(String s ){
 
 	    Date result = null;
 	    try{
 	        result  = dateFormat.parse(s);
 	    }
-
 	    catch(ParseException e){
 	        e.printStackTrace();
 	    }
 	    return result ;
 	}
 	
-	public static void main(String[] args) throws IOException{
-		//display();
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // this will get the input in dd/MM/yyyy form
-		FileInputStream inputFile = new FileInputStream("input.txt");
-		Scanner scanner = new Scanner(inputFile);
-		
-		
-		while(scanner.hasNext()) {//Read all data in file
-			String[] input = scanner.nextLine().split(", ");
-			Date releaseDate = stringToDate(input[1].replace("(ReleaseDate)", ""), dateFormat);
-			Date receiveDate = stringToDate(input[3].replace("(ReceiveDate)", ""), dateFormat);
-			String name = input[0];
-			String description = input[2];
-			String status = input[4];
-			
-			Movie movie = new Movie(name, releaseDate, description, receiveDate,status );
-			if(input[4].equals("released")) {
-				showing.add(movie);
-			}
-			if(input[4].equals("received")) {
-				coming.add(movie);
-			}
-		}
-		scanner.close();
-		inputFile.close();
-	} 
+	
+	/**
+	 * Add a movie to the coming list if user chooses option 2
+	 */
 	public static void addMovie() { 
 
-		//first we'll create a scanner
-		Scanner movieInput = new Scanner(System.in);
-		
 		//The user will be asked to set the name of the new movie
-		System.out.println("Please set name of Movie: ");
+		System.out.print("Please set name of Movie: ");
 		String movieName = movieInput.nextLine();
-		System.out.println();
 		
 		//the user will then be prompted to set the description
-		System.out.println("Please set description of movie: ");
+		System.out.print("Please set description of movie: ");
 		String movieDesc = movieInput.nextLine();
-		System.out.println();
-		
-		//the user will then set the date
-		System.out.println("Please set release year: ");
-		int releaseYear = movieInput.nextInt();
-		System.out.println();
-		
-		//if the release year exceeds 9999 then the movie is invalid
-		if (releaseYear > 9999) {
-			
-			System.out.println("Year Invalid, please set valid year: ");
-			releaseYear = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
-		
-		System.out.println("Please set release month: ");
-		int releaseMonth = movieInput.nextInt();
-		System.out.println();
-		
-		//if the release month exceeds 12 than it will be invalid
-		if (releaseMonth > 12) {
-			
-			System.out.println("Month Invalid, please set valid month: ");
-			releaseMonth = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
-		
-		System.out.println("Please set release day: ");
-		int releaseDay = movieInput.nextInt();
-		System.out.println();
-		
-		//if the releaseDay exceeds 31 days the date will be invalid
-		if (releaseDay > 31) {
-			
-			System.out.println("Day Invalid, please set valid day: ");
-			releaseDay = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
 		
 		//a new date is created with the user's inputs
-		Date movieRelease = new Date(releaseYear, releaseMonth, releaseDay);
+		Date movieRelease = getDate("release date");
 		
-		//we will repeat the steps to get the recieve year
-		System.out.println("Please set receive year: ");
-		int receiveYear = movieInput.nextInt();
-		System.out.println();
-		
-		if (receiveYear > 9999) {
-			
-			System.out.println("Year Invalid, please set valid year: ");
-			receiveYear = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
-		
-		System.out.println("Please set receive month: ");
-		int receiveMonth = movieInput.nextInt();
-		System.out.println();
-		
-		if (receiveMonth > 12) {
-			
-			System.out.println("Month Invalid, please set valid month: ");
-			receiveMonth = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
-		
-		System.out.println("Please set receive day: ");
-		int receiveDay = movieInput.nextInt();
-		System.out.println();
-		
-		if (receiveDay > 31) {
-			
-			System.out.println("Day Invalid, please set valid day: ");
-			receiveDay = movieInput.nextInt();
-			System.out.println();
-			
-		}//end if
 		
 		//a new date is created for the receive year
-		Date movieReceive = new Date(receiveYear, receiveMonth, receiveDay);
+		Date movieReceive = getDate("receive date");
 		
-		//finally the user will be asked to set the status of the movie
-		System.out.println("Please set status of Movie: ");
-		String movieStatus = movieInput.nextLine();
-		System.out.println();//Note: for some reason the movie status lines seem to get skipped over
+		//set status to received
+		String movieStatus = "received";
 		
 		//the movie class is created
-		Movie newMovie = new Movie(movieRelease, movieName, movieDesc, movieReceive, movieStatus);//NOTE: the formatting on the dates is incorrect
-
-		//moviesComing.add(newMovie); i'm not sure why this wasn't working
+		Movie newMovie = new Movie(movieName, movieRelease, capitalize(movieDesc), movieReceive, movieStatus);//NOTE: the formatting on the dates is incorrect
 		
+		coming.add(newMovie);
 		
 	}//end addMovie
+	
+	
+
 }
