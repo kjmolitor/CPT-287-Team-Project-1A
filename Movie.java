@@ -22,47 +22,47 @@ public class Movie {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns release date of movie
+	 * @return: release date of movie
 	 */
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns name of movie
+	 * @return: name of movie
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns description of movie
+	 * @return: the description of a movie
 	 */
 	public String getDescription() {
 		return description;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns receive date of a movie
+	 * @return: receive date of a movie
 	 */
 	public Date getReceiveDate() {
 		return receiveDate;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns status of movie
+	 * @return: status of a movie
 	 */
 	public String getStatus() {
 		return status;
 	}
 	
 	/**
-	 * 
+	 * Updates the release date of a movie
 	 * @param releaseDate
 	 */
 	public void setReleaseDate(Date releaseDate) {
@@ -70,7 +70,7 @@ public class Movie {
 	}
 	
 	/**
-	 * 
+	 * Updates the name of a movie
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -78,7 +78,7 @@ public class Movie {
 	}
 	
 	/**
-	 * 
+	 * Updates description of a movie
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -86,7 +86,7 @@ public class Movie {
 	}
 	
 	/**
-	 * 
+	 * Updates receive dates of a movie
 	 * @param receiveDate
 	 */
 	public void setReceiveDate(Date receiveDate) {
@@ -94,7 +94,7 @@ public class Movie {
 	}
 	
 	/**
-	 * 
+	 * Updates status of movie
 	 * @param status
 	 */
 	public void setStatus(String status) {
