@@ -71,7 +71,7 @@ public class Movie_List implements Iterable {
 			data[index] = value;
 		} // Time complexity: O(1)
 		
-		/** Doubles he capacity. 	*/
+		/** Doubles the capacity. 	*/
 		private void reserve() {
 			capacity *= 2;
 			Movie[] newArr = new Movie[capacity];
